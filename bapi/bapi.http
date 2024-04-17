@@ -1,0 +1,6 @@
+@bapi_HostAddress = http://localhost:5185
+
+GET {{bapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
