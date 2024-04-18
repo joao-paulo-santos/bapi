@@ -91,13 +91,13 @@ Visual Studio /// Docker Container Deploy
 
 ### Architecture
 
-I chose a simplified version of the onion architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
+I chose a simplified version of the clean architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
 
 - Testability: The core business logic (domain layer) is easily unit tested in isolation.
 - Maintainability: Changes to UI or data access won't affect the core logic, simplifying maintenance.
 - Reusability: The core domain can be potentially reused across different applications or UIs."
 <div align="center">
-<img src="img/onion.png" alt="Logo" width="250" height="250">
+<img src="img/clean.png" alt="Logo" width="250" height="250">
 </div>
 
 ### Database
