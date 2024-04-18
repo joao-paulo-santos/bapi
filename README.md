@@ -91,7 +91,7 @@ Visual Studio /// Docker Container Deploy
 
 ### Architecture
 
-I chose a simplified version of the onion architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
+I chose a simplified version of the clean architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
 
 - Testability: The core business logic (domain layer) is easily unit tested in isolation.
 - Maintainability: Changes to UI or data access won't affect the core logic, simplifying maintenance.
@@ -110,19 +110,22 @@ The database chosen was PostgreSQL hosted on [Neon](https://neon.tech/) for its 
 <br>
 
 ```sql
-CREATE TYPE role AS ENUM ('Admin', 'Manager', 'User');
+--CREATE TYPE role AS ENUM ('Admin', 'Manager', 'User');
 
 CREATE TABLE member (
   id SERIAL PRIMARY KEY,
-  user_role role NOT NULL,
+  user_role int NOT NULL,
   username VARCHAR (20) UNIQUE NOT NULL, 
-  password CHAR (32) NOT NULL
+  password CHAR (32) NOT NULL,
+  created_date TIMESTAMP  NOT NUll
 );
 
 CREATE TABLE book (
   id SERIAL PRIMARY KEY,
   name VARCHAR (120) UNIQUE NOT NULL, 
-  description Text NOT NULL
+  description Text NOT NULL,
+  created_date TIMESTAMP  NOT NUll,
+  modifieddate TIMESTAMP  NOT NUll
 );
 
 ```
@@ -131,14 +134,18 @@ CREATE TABLE book (
 
 ```sql
 -- Password is md5('Aa1234')
-INSERT INTO user(user_role, username, password )
-VALUES('Admin','admin','e267cfcd18461ce938067eca67c59f41');
+INSERT INTO member(user_role, username, password, created_date )
+VALUES(0,'admin','E267CFCD18461CE938067ECA67C59F41', NOW());
 ```
 
 ### Packages Used
 ```sh
 # Swagger
 dotnet add package Swashbuckle.AspNetCore 
+
+#Json Tokens
+dotnet add package Microsoft.IdentityModel.JsonWebTokens 
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 #Entity Framework + Postgre Addon
 dotnet add package Microsoft.EntityFrameworkCore
