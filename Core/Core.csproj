@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\EExceptions\" />
-    <Folder Include="Entities\" />
+    <Compile Remove="Common\EExceptions\**" />
+    <EmbeddedResource Remove="Common\EExceptions\**" />
+    <None Remove="Common\EExceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
   </ItemGroup>
