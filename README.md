@@ -122,11 +122,11 @@ Overall, JWT authentication provides a robust and secure approach to user access
 
 <div align="center">
 <figure style="display:inline-block; margin:0px">
-<img src="img/UserController.jpg" alt="Logo" width="250" height="250">
+<img src="img/UserController.JPG" alt="Logo" width="250" height="250">
 <figcaption>UserController</figcaption>
 </figure>
 <figure style="display:inline-block; margin:0px">
-<img src="img/UserController.jpg" alt="Logo" width="250" height="250">
+<img src="img/UserController.JPG" alt="Logo" width="250" height="250">
 <figcaption>BookController</figcaption>
 </figure>
 </div>
