@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Core.Interfaces;
+using Infrastructure.Repositories;
+using Application.Services;
 
 namespace bapi
 {
@@ -24,7 +27,7 @@ namespace bapi
             //dataSourceBuilder.MapEnum<Role>();
             var dataSource = dataSourceBuilder.Build();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<PostgressDbContext>(options =>
         options.UseNpgsql(dataSource));
 
             // JWT
@@ -47,6 +50,10 @@ namespace bapi
              });
             builder.Services.AddAuthorization();
 
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

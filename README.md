@@ -91,7 +91,7 @@ Visual Studio /// Docker Container Deploy
 
 ### Architecture
 
-I chose a simplified version of the clean architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
+I chose the clean architecture for this .NET project because it promotes loose coupling and separation of concerns. The core domain layer remains independent of external frameworks and databases (infrastructure layer). This brings several benefits:
 
 - Testability: The core business logic (domain layer) is easily unit tested in isolation.
 - Maintainability: Changes to UI or data access won't affect the core logic, simplifying maintenance.
@@ -100,13 +100,46 @@ I chose a simplified version of the clean architecture for this .NET project bec
 <img src="img/clean.png" alt="Logo" width="250" height="250">
 </div>
 
+---
+
+### Authentication
+
+This .NET project leverages JSON Web Tokens (JWT) for user authentication. JWT offers several advantages that make it well-suited for this application:
+
+**Stateless Authentication**: JWT tokens are self-contained, containing all the necessary information about the user (claims) within the token itself. This eliminates the need for server-side session management, simplifying the architecture and potentially improving scalability.
+
+**Enhanced Security**: JWT tokens are cryptographically signed, ensuring their integrity and preventing unauthorized token modification. This strengthens security measures by protecting against potential attacks like session hijacking.
+
+**Flexibility**: JWT tokens can be configured with various claims, allowing you to encode additional user information beyond just identity. This flexibility can be useful for implementing authorization logic based on user roles or permissions.
+
+**Centralized Authentication**: With JWT, you can implement a separate authentication server responsible for issuing and validating tokens. This centralizes user authentication logic, preventing each microservice from needing its own user management system.
+
+Overall, JWT authentication provides a robust and secure approach to user access management in this .NET project. Its stateless nature, strong security features, and flexibility make it a valuable tool for building modern and scalable web applications.
+
+---
+
+### Endpoints
+
+<div align="center">
+<figure style="display:inline-block; margin:0px">
+<img src="img/UserController.jpg" alt="Logo" width="250" height="250">
+<figcaption>UserController</figcaption>
+</figure>
+<figure style="display:inline-block; margin:0px">
+<img src="img/UserController.jpg" alt="Logo" width="250" height="250">
+<figcaption>BookController</figcaption>
+</figure>
+</div>
+
+---
+
 ### Database
 
 The database chosen was PostgreSQL hosted on [Neon](https://neon.tech/) for its ease of setup and potential scalability. Normally for such a small project I would choose SQLite or even a JSON document along with a minimal .Net API, but I feel that would defeat the purpose of a proof of skill.
 
 #### DB Structure
 
-<img src="img/DBStruct.png" alt="Logo" width="350" height="150">
+<img src="img/DBStruct.png" alt="Logo" width="250" height="150">
 <br>
 
 ```sql
@@ -143,7 +176,7 @@ VALUES(0,'admin','E267CFCD18461CE938067ECA67C59F41', NOW());
 # Swagger
 dotnet add package Swashbuckle.AspNetCore 
 
-#Json Tokens
+#Json Web Tokens
 dotnet add package Microsoft.IdentityModel.JsonWebTokens 
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
