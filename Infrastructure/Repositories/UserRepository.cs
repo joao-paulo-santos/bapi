@@ -2,19 +2,12 @@
 using Core.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        
+
         private readonly PostgressDbContext _context;
 
         public UserRepository(PostgressDbContext context)
@@ -42,8 +35,8 @@ namespace Infrastructure.Repositories
 
         public async Task<IReadOnlyList<User>> GetPagedListOfUsersAsync(int pageIndex, int pageSize)
         {
-            
-            return await _context.Users.Skip(pageIndex* pageSize).Take(pageSize).ToListAsync();
+
+            return await _context.Users.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(int Id)

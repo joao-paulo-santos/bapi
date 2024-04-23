@@ -1,16 +1,17 @@
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
-using Core.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.OpenApi.Models;
-using Core.Interfaces;
-using Infrastructure.Repositories;
 using Application.Services;
+using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Logging;
+using Infrastructure.Persistence;
+using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Npgsql;
+using Serilog;
+using System.Text;
 
 namespace bapi
 {
@@ -20,12 +21,27 @@ namespace bapi
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware", Serilog.Events.LogEventLevel.Information)
+                .WriteTo.Console()
+                .WriteTo.File(
+                    "logs/apilog,txt",
+                    rollingInterval: RollingInterval.Day,
+                    fileSizeLimitBytes: 100 * 1024 * 1024,
+                    retainedFileCountLimit: 5,
+                    rollOnFileSizeLimit: true,
+                    shared: true,
+                    flushToDiskInterval: TimeSpan.FromSeconds(1))
+                .CreateLogger();
 
             // Add services to the container.
-
+            builder.Host.UseSerilog();
             // Database
             var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("DefaultConnection"));
-            //dataSourceBuilder.MapEnum<Role>();
             var dataSource = dataSourceBuilder.Build();
 
             builder.Services.AddDbContext<PostgressDbContext>(options =>
@@ -33,7 +49,7 @@ namespace bapi
 
             // JWT
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
-            var jwtKey =  builder.Configuration.GetSection("Jwt:Key").Get<string>() ??
+            var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>() ??
                 throw new Exception("Failed to obtain Jwt Key");
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              .AddJwtBearer(options =>
@@ -51,6 +67,7 @@ namespace bapi
              });
             builder.Services.AddAuthorization();
 
+            builder.Services.AddSingleton<Core.Interfaces.ILogger>(new SerilogLogger(Log.Logger));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
@@ -90,6 +107,17 @@ namespace bapi
                 });
             });
 
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddHttpLogging(logging =>
+                {
+                    logging.LoggingFields = HttpLoggingFields.RequestHeaders | HttpLoggingFields.RequestBody | HttpLoggingFields.ResponseBody;
+                    logging.RequestHeaders.Add("Authorization");
+                    logging.RequestBodyLogLimit = 4096;
+                    logging.ResponseBodyLogLimit = 4096;
+                });
+            }
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -97,10 +125,14 @@ namespace bapi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseHttpLogging();
             }
 
+            app.UseSerilogRequestLogging();
+
+
             app.UseHttpsRedirection();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 

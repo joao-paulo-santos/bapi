@@ -1,5 +1,4 @@
-﻿using Core.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace bapi.Dtos
 {
@@ -11,7 +10,7 @@ namespace bapi.Dtos
 
         [Required(ErrorMessage = "Password is required")]
         [StringLength(255, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 5)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,}$", ErrorMessage = "Password must be at least 5 characters and include at least one lowercase letter and one uppercase letter.")] 
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,}$", ErrorMessage = "Password must be at least 5 characters and include at least one lowercase letter and one uppercase letter.")]
         public required string Password { get; set; }
     }
 }

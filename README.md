@@ -116,6 +116,15 @@ This .NET project leverages JSON Web Tokens (JWT) for user authentication. JWT o
 
 Overall, JWT authentication provides a robust and secure approach to user access management in this .NET project. Its stateless nature, strong security features, and flexibility make it a valuable tool for building modern and scalable web applications.
 
+#### Role Permissions
+
+| Role | Users (CRUD) | Books (CRUD) |
+|---|---|---|
+| Admin | Full | Full |
+| Manager | Read (Own) | FULL |
+| User | Read (Own)| Read|
+| Anonymous | Not Allowed| Read|
+
 ---
 
 ### Endpoints
@@ -194,6 +203,7 @@ dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL.Design
 
 #Logging (Serilog)
 $ dotnet add package Serilog
+$ dotnet add package Serilog.AspNetCore
 $ dotnet add package Serilog.Sinks.Console
 $ dotnet add package Serilog.Sinks.File
 ```

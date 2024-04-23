@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Core.Entities;
-using Microsoft.AspNetCore.Authorization;
-using bapi.Dtos;
-using Core.Interfaces;
+﻿using bapi.Dtos;
 using bapi.Mappers;
+using Core.Entities;
+using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System;
 
 namespace bapi.Controllers
 {
@@ -17,14 +16,14 @@ namespace bapi.Controllers
         private readonly ITokenService _tokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthenticationController(ITokenService tokenService,IUserService userService, IHttpContextAccessor httpContextAccessor)
+        public AuthenticationController(ITokenService tokenService, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
             _tokenService = tokenService;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        
+
         [Authorize(Roles = "Admin")]
         [Route("getUserByUsername")]
         [HttpGet]
@@ -80,7 +79,7 @@ namespace bapi.Controllers
             User? user = await _userService.GetUserByUsernameAsync(loginRequest.Username);
             if (user == null) return Unauthorized("Username not found.");
 
-            if(!_userService.VerifyPassword(user,loginRequest.Password))
+            if (!_userService.VerifyPassword(user, loginRequest.Password))
             {
                 return Unauthorized("Invalid Credentials");
             }
@@ -97,10 +96,10 @@ namespace bapi.Controllers
         {
             User? user = await _userService.GetUserByUsernameAsync(registerRequest.Username);
             if (user != null) return Conflict("Username already in use.");
-            
-           user = await _userService.RegisterUserAsync(registerRequest.Username, registerRequest.Password);
+
+            user = await _userService.RegisterUserAsync(registerRequest.Username, registerRequest.Password);
             if (user == null) return Problem();
-            
+
 
             var token = _tokenService.CreateToken(user);
 
@@ -114,8 +113,8 @@ namespace bapi.Controllers
         {
             User? user = await _userService.GetUserByUsernameAsync(changeRoleDto.Username);
             if (user == null) return NotFound("User not found");
-            
- 
+
+
             bool result = Enum.TryParse(changeRoleDto.NewRole, true, out Role newRole) && Enum.IsDefined(typeof(Role), newRole);
             if (!result) return BadRequest("Invalid Role");
 
