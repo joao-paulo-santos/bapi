@@ -191,6 +191,11 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 dotnet add package Microsoft.EntityFrameworkCore
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL.Design
+
+#Logging (Serilog)
+$ dotnet add package Serilog
+$ dotnet add package Serilog.Sinks.Console
+$ dotnet add package Serilog.Sinks.File
 ```
 
 
