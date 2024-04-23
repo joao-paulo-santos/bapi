@@ -175,7 +175,7 @@ Overall, JWT authentication provides a robust and secure approach to user access
 | Role | Users (CRUD) | Books (CRUD) |
 |---|---|---|
 | Admin | Full | Full |
-| Manager | Read (Own) | FULL |
+| Manager | Read (Own) | Full |
 | User | Read (Own)| Read|
 | Anonymous | Not Allowed| Read|
 
@@ -186,11 +186,13 @@ Overall, JWT authentication provides a robust and secure approach to user access
 ### Endpoints
 
 <div align="center">
-<img src="img/UserController.JPG" alt="Logo" width="300" height="350" style="display:inline-block; margin:0px">
-<img src="img/BooksController.JPG" alt="Logo" width="300" height="350" style="display:inline-block; margin:0px">
+<img src="img/UserController.JPG" alt="Logo" width="49%" height="300" style="display:inline-block; margin:0px">
+<img src="img/BooksController.JPG" alt="Logo" width="49%"  height="300" style="display:inline-block; margin:0px">
 </div>
 
 ---
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Logging
 
