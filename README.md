@@ -82,7 +82,7 @@ git clone https://github.com/joao-paulo-santos/bapi.git
 Visual Studio /// Docker Container Deploy
 ```
 
-[WIP]
+[Work in Progres]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -99,6 +99,39 @@ I chose the clean architecture for this .NET project because it promotes loose c
 <div align="center">
 <img src="img/clean.png" alt="Logo" width="250" height="250">
 </div>
+
+#### Project Structure
+
+<div align="center">
+<img src="img/ApplicationStructure.png" alt="Logo" >
+</div>
+
+#### Logic Flow Example
+
+<div align="center">
+<img src="img/LogicFlow.png" alt="Logo" >
+</div>
+
+#### Implemented Software Design Patterns
+
+1. **Repository Pattern**:
+    - Encapsulates data access logic within repositories.
+    - Repositories provide a layer of abstraction between the domain layer and the specific data storage technology (e.g., database, file system).
+    - They define methods for CRUD (Create, Read, Update, Delete) operations on domain entities.
+2. **Service Layer Pattern**:
+    - Implements application logic and use cases in a dedicated service layer.
+    - Services orchestrate domain logic, interact with repositories, and coordinate business rules.
+    - They can also handle validation, authorization, and exception handling.
+<div align="center">
+<img src="img/ServiceAndRepositoryPattern.png" alt="Logo" >
+</div>
+
+service and Repository pattern illustration.
+
+3. **Unit of Work Pattern**:
+    - Manages a series of database operations as a unit, ensuring data consistency.
+    - Tracks changes made to entities and provides methods to commit or rollback changes.
+    - Provides an abstraction layer between services and repositories, promoting loose coupling.
 
 ---
 
