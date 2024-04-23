@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Core.Interfaces;
 using Infrastructure.Repositories;
 using Application.Services;
+using Infrastructure.Data;
 
 namespace bapi
 {
@@ -32,8 +33,8 @@ namespace bapi
 
             // JWT
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
-            var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
-
+            var jwtKey =  builder.Configuration.GetSection("Jwt:Key").Get<string>() ??
+                throw new Exception("Failed to obtain Jwt Key");
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              .AddJwtBearer(options =>
              {
@@ -50,9 +51,12 @@ namespace bapi
              });
             builder.Services.AddAuthorization();
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

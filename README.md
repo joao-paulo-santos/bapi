@@ -121,14 +121,8 @@ Overall, JWT authentication provides a robust and secure approach to user access
 ### Endpoints
 
 <div align="center">
-<figure style="display:inline-block; margin:0px">
-<img src="img/UserController.JPG" alt="Logo" width="250" height="250">
-<figcaption>UserController</figcaption>
-</figure>
-<figure style="display:inline-block; margin:0px">
-<img src="img/UserController.JPG" alt="Logo" width="250" height="250">
-<figcaption>BookController</figcaption>
-</figure>
+<img src="img/UserController.JPG" alt="Logo" width="300" height="350" style="display:inline-block; margin:0px">
+<img src="img/BooksController.JPG" alt="Logo" width="300" height="350" style="display:inline-block; margin:0px">
 </div>
 
 ---
@@ -155,10 +149,10 @@ CREATE TABLE member (
 
 CREATE TABLE book (
   id SERIAL PRIMARY KEY,
-  name VARCHAR (120) UNIQUE NOT NULL, 
+  name VARCHAR (120) NOT NULL, 
   description Text NOT NULL,
   created_date TIMESTAMP  NOT NUll,
-  modifieddate TIMESTAMP  NOT NUll
+  modified_date TIMESTAMP  NOT NUll
 );
 
 ```
@@ -167,8 +161,21 @@ CREATE TABLE book (
 
 ```sql
 -- Password is md5('Aa1234')
-INSERT INTO member(user_role, username, password, created_date )
-VALUES(0,'admin','E267CFCD18461CE938067ECA67C59F41', NOW());
+INSERT INTO member(user_role, username, password, created_date) VALUES
+(0,'admin','E267CFCD18461CE938067ECA67C59F41', NOW()),
+(1,'manager','E267CFCD18461CE938067ECA67C59F41', NOW()),
+(2,'user','E267CFCD18461CE938067ECA67C59F41', NOW()),
+(1,'john','E267CFCD18461CE938067ECA67C59F41', NOW());
+
+INSERT INTO book (name, description, created_date, modified_date)
+VALUES
+  ('The Lord of the Rings', 'An epic high-fantasy trilogy by J.R.R. Tolkien', NOW(), NOW()),
+  ('Pride and Prejudice', 'A novel of manners by Jane Austen', NOW(), NOW()),
+  ('To Kill a Mockingbird', 'A coming-of-age novel by Harper Lee', NOW(), NOW()),
+  ('The Secret Garden', 'Experience a world of adventure a dystopian future', NOW(), NOW()),
+  ('A Knights Quest', 'This is a captivating story about suspense a hidden truth', NOW(), NOW()),
+  ('The Time Travelers Paradox', 'Embark on a thrilling journey through intrigue a forgotten kingdom', NOW(), NOW()),
+  ('The Alchemist', 'Delve into the depths of suspense a hidden truth', NOW(), NOW());
 ```
 
 ### Packages Used

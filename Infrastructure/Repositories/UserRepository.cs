@@ -22,18 +22,17 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<User> AddUserAsync(User newUser)
+        public async Task<User?> AddUserAsync(User newUser)
         {
             _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0 ? newUser : null;
         }
 
         public async Task<bool> DeleteUserAsync(User user)
         {
             _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<IReadOnlyList<User>> GetListOfUsersAsync() //Usage Not Recomended, use paging
@@ -47,25 +46,26 @@ namespace Infrastructure.Repositories
             return await _context.Users.Skip(pageIndex* pageSize).Take(pageSize).ToListAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int Id)
+        public async Task<User?> GetUserByIdAsync(int Id)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
             return user;
         }
 
-        public async Task<User> GetUserByUsernameAsync(string Username)
+        public async Task<User?> GetUserByUsernameAsync(string Username)
         {
             User? user = await _context.Users.FirstOrDefaultAsync(user => user.Username == Username);
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(User newUser)
+        public async Task<User?> UpdateUserAsync(User newUser)
         {
-            User user = await _context.Users.FirstAsync(u => u.Id == newUser.Id);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Id);
+            if (user == null) return null;
             user.Role = newUser.Role;
             user.Password = newUser.Password;
-            await _context.SaveChangesAsync();
-            return user;
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0 ? user : null;
         }
     }
 }

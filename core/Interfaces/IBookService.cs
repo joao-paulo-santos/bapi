@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IBookRepository
+    public interface IBookService
     {
         Task<Book?> GetBookByIdAsync(int Id);
         Task<IReadOnlyList<Book>> QueryPagedBooksByNameAsync(string name, int pageIndex, int pageSize);

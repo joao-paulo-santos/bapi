@@ -13,25 +13,25 @@ namespace Core.Entities
     {
         [Key]
         [Column("id")]
-        public int Id
+        public new int Id
         {
             get;
             set;
         }
         [Column("username")]
-        public string Username
+        public required string Username
         {
             get;
             set;
         }
         [Column("password")]
-        public string Password
+        public required string Password
         {
             get;
             set;
         }
         [Column("user_role")]
-        public Role Role
+        public required Role Role
         {
             get;
             set;

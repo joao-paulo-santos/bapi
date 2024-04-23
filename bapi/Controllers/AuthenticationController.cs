@@ -52,7 +52,7 @@ namespace bapi.Controllers
         {
             var list = await _userService.GetPagedListOfUsersAsync(pageIndex, pageSize);
             List<UserDto> users = list.Select(x => UserMapper.UserToDto(x)).ToList();
-            return Ok(list);
+            return Ok(users);
         }
 
         [Authorize]
@@ -61,7 +61,7 @@ namespace bapi.Controllers
         public ActionResult<string> getClaim()
         {
             var user = _httpContextAccessor.HttpContext?.User;
-            if (user == null || !user.Identity.IsAuthenticated)
+            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
             {
                 return Unauthorized();
             }

@@ -13,39 +13,38 @@ namespace Application.Services
     public class UserService : IUserService
     {
         const int maxPageSize = 15;
-        private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
-        public async Task<User> ChangeUserRoleAsync(User user, Role newRole)
+        public async Task<User?> ChangeUserRoleAsync(User user, Role newRole)
         {
             user.Role = newRole;
-            await _userRepository.UpdateUserAsync(user);
-            return await _userRepository.GetUserByIdAsync(user.Id);
+            return await _unitOfWork.UserRepository.UpdateUserAsync(user);
+
         }
 
         public async Task<bool> DeleteUserAsync(User user)
         {
-            await _userRepository.DeleteUserAsync(user);
-            return await _userRepository.GetUserByIdAsync(user.Id) == null;
+            return await _unitOfWork.UserRepository.DeleteUserAsync(user);
         }
 
         public async Task<IReadOnlyList<User>> GetListOfUsersAsync()
         {
-            return await _userRepository.GetListOfUsersAsync();
+            return await _unitOfWork.UserRepository.GetListOfUsersAsync();
         }
 
         public async Task<IReadOnlyList<User>> GetPagedListOfUsersAsync(int pageIndex, int pageSize)
         {
             int size = pageSize > maxPageSize ? maxPageSize : pageSize;
             size = size > 0 ? size : 5;
-            return await _userRepository.GetPagedListOfUsersAsync(pageIndex, size);
+            return await _unitOfWork.UserRepository.GetPagedListOfUsersAsync(pageIndex, size);
         }
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _userRepository.GetUserByUsernameAsync(username);
+            return await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
         }
 
         public bool VerifyPassword(User user, string Password)
@@ -59,7 +58,7 @@ namespace Application.Services
             return stringHash.Equals(user.Password, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        public async Task<User> RegisterUserAsync(string Username, string Password)
+        public async Task<User?> RegisterUserAsync(string Username, string Password)
         {
             byte[] hash;
             using (MD5 md5 = MD5.Create())
@@ -76,8 +75,7 @@ namespace Application.Services
                 Role = Role.User
             };
 
-            await _userRepository.AddUserAsync(newUser);
-            return await _userRepository.GetUserByUsernameAsync(Username);
+            return await _unitOfWork.UserRepository.AddUserAsync(newUser);
         }
 
     }
