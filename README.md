@@ -126,14 +126,35 @@ I chose the clean architecture for this .NET project because it promotes loose c
 <img src="img/ServiceAndRepositoryPattern.png" alt="Logo" >
 </div>
 
-service and Repository pattern illustration.
+**Figure** service and repository patterns illustration.
 
 3. **Unit of Work Pattern**:
     - Manages a series of database operations as a unit, ensuring data consistency.
     - Tracks changes made to entities and provides methods to commit or rollback changes.
     - Provides an abstraction layer between services and repositories, promoting loose coupling.
+<div align="center">
+<img src="img/UnitOfWorkPattern.png" alt="Logo" >
+</div>
+
+**Figure** Unit Of Work pattern Illustration
+
+
+4. **Dependency Injection Pattern**:
+    - Dependencies are injected into classes through constructors or methods.
+    - Promotes loose coupling and easier testing by allowing mock or stub injections.
+
+5. **Adapter Pattern**:
+    - Adapts an existing interface to a different interface or framework.
+    - Used within the infrastructure layer to integrate external libraries or services that don't conform to the application's internal interfaces. (Ilogger Implementation of Serilog.ILogger)
+
+6. **Mapper Pattern**:
+    - Maps data between different object representations.
+    - Often used to map domain entities (complex objects representing domain concepts) to DTOs (simpler objects used for data transfer between layers).
+    - Keeps domain logic clean and independent of data transfer concerns.
 
 ---
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Authentication
 
@@ -160,6 +181,8 @@ Overall, JWT authentication provides a robust and secure approach to user access
 
 ---
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Endpoints
 
 <div align="center">
@@ -168,6 +191,35 @@ Overall, JWT authentication provides a robust and secure approach to user access
 </div>
 
 ---
+
+### Logging
+
+I decided to use Serilog as the logging framework for this project because it offers several advantages over the default Microsoft.Extensions.Logging:
+
+  - Flexibility: Serilog provides a rich configuration syntax and a wide range of sinks (destinations) for your logs. You can easily send logs to the console, file systems, databases, or external services.
+  - Extensibility: Serilog has a large ecosystem of extensions and libraries that can enhance its capabilities, such as enriching logs with additional context or adding custom log levels.
+
+#### Minimum Level Tweaks for Different Environments:
+
+To balance development needs with production efficiency, I've configured Serilog to use different minimum logging levels for each environment:
+
+  - Development: A lower minimum level (e.g., Debug or Information) will capture a wider range of informational messages, aiding in debugging and troubleshooting.
+  - Production: A higher minimum level (e.g., Warning) will focus on capturing critical events and errors, reducing log verbosity and improving performance.
+
+#### Interoperability with .net HttpLogging
+
+While in the development environment HTTPLogging is configured along with Serilog to capture request/response headers and body for easier debugging, this is disabled for production for obvious privacy reasons.  
+
+#### Fine-Tuning for Specific Needs:
+
+These are just the initial configurations, and further adjustments can be made based on specific project requirements. For instance, you might want to:
+  - Exclude certain log categories from being written to specific sinks.
+  - Define custom log levels for capturing application-specific events.
+  - Implement enrichment pipelines to add additional context (e.g., user ID, machine name) to log entries.
+
+---
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Database
 
@@ -219,6 +271,7 @@ VALUES
   ('The Time Travelers Paradox', 'Embark on a thrilling journey through intrigue a forgotten kingdom', NOW(), NOW()),
   ('The Alchemist', 'Delve into the depths of suspense a hidden truth', NOW(), NOW());
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Packages Used
 ```sh
