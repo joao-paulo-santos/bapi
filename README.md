@@ -273,6 +273,38 @@ VALUES
   ('The Time Travelers Paradox', 'Embark on a thrilling journey through intrigue a forgotten kingdom', NOW(), NOW()),
   ('The Alchemist', 'Delve into the depths of suspense a hidden truth', NOW(), NOW());
 ```
+
+---
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Tests
+
+This project adheres to a test-driven development (TDD) approach, emphasizing unit testing to ensure the correctness and reliability of our application logic. We leverage the xUnit testing framework to create a robust test suite that covers the core functionalities of our services.
+
+**Service Layer Testing**
+
+The unit tests focus on the application layer, specifically the UserService and BookService classes. These services handle essential business logic and interact with the data access layer (Repositories).
+
+  - UserService Tests:
+
+    - Verify user creation logic.
+    - verify password hashing integrity.
+    - Cover user retrieval functionalities, including getting users by ID, Username and paged.
+  - BookService Tests:
+    - Validate book addition logic.
+    - Ensure book retrieval methods work as expected, including getting books by ID, name, or description.
+    - Test pagination functionalities to verify efficient retrieval of large book datasets in a paged manner.
+    - Cover book update logic, guaranteeing proper data modifications and persistence.
+    - Include tests for book deletion, ensuring successful removal and data integrity.
+By thoroughly testing these core services, we gain confidence in the overall application's behavior and avoid potential regressions during future development.
+
+This testing strategy promotes code maintainability, as tests serve as living documentation that clarify the expected behavior of each service method. Additionally, unit tests can be easily executed and integrated into the continuous integration (CI) pipeline to provide automated feedback on code changes.
+
+In the future, we can expand the test suite to cover edge cases, error handling scenarios, and integration tests that involve interactions between different parts of the application.
+
+---
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Packages Used
@@ -294,6 +326,9 @@ $ dotnet add package Serilog
 $ dotnet add package Serilog.AspNetCore
 $ dotnet add package Serilog.Sinks.Console
 $ dotnet add package Serilog.Sinks.File
+
+#Testing
+$ dotnet add package Moq
 ```
 
 

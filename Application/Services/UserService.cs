@@ -33,9 +33,9 @@ namespace Application.Services
 
         public async Task<IReadOnlyList<User>> GetPagedListOfUsersAsync(int pageIndex, int pageSize)
         {
-            int size = pageSize > maxPageSize ? maxPageSize : pageSize;
-            size = size > 0 ? size : 5;
-            return await _unitOfWork.UserRepository.GetPagedListOfUsersAsync(pageIndex, size);
+            int size = Math.Clamp(pageSize, 5, maxPageSize);
+            int index = Math.Max(pageIndex, 0);
+            return await _unitOfWork.UserRepository.GetPagedListOfUsersAsync(index, size);
         }
 
         public async Task<User?> GetUserByUsernameAsync(string username)

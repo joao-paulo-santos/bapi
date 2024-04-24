@@ -30,23 +30,23 @@ namespace Application.Services
 
         public async Task<IReadOnlyList<Book>> GetPagedListOfBooksAsync(int pageIndex, int pageSize)
         {
-            int size = pageSize > maxPageSize ? maxPageSize : pageSize;
-            size = size > 0 ? size : 5;
-            return await _unitOfWork.BookRepository.GetPagedListOfBooksAsync(pageIndex, size);
+            int size = Math.Clamp(pageSize, 5, maxPageSize);
+            int index = Math.Max(pageIndex, 0);
+            return await _unitOfWork.BookRepository.GetPagedListOfBooksAsync(index, size);
         }
 
         public async Task<IReadOnlyList<Book>> QueryPagedBooksByDescriptionAsync(string decription, int pageIndex, int pageSize)
         {
-            int size = pageSize > maxPageSize ? maxPageSize : pageSize;
-            size = size > 0 ? size : 5;
-            return await _unitOfWork.BookRepository.QueryPagedBooksByDescriptionAsync(decription, pageIndex, size);
+            int size = Math.Clamp(pageSize, 5, maxPageSize);
+            int index = Math.Max(pageIndex, 0);
+            return await _unitOfWork.BookRepository.QueryPagedBooksByDescriptionAsync(decription, index, size);
         }
 
         public async Task<IReadOnlyList<Book>> QueryPagedBooksByNameAsync(string name, int pageIndex, int pageSize)
         {
-            int size = pageSize > maxPageSize ? maxPageSize : pageSize;
-            size = size > 0 ? size : 5;
-            return await _unitOfWork.BookRepository.QueryPagedBooksByNameAsync(name, pageIndex, size);
+            int size = Math.Clamp(pageSize, 5, maxPageSize);
+            int index = Math.Max(pageIndex, 0);
+            return await _unitOfWork.BookRepository.QueryPagedBooksByNameAsync(name, index, size);
         }
 
         public async Task<Book?> UpdateBookAsync(Book newBook)
